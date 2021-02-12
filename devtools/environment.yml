@@ -73,7 +73,7 @@ dependencies:
   - twine~=3.3
 
   # user environment
-  - dask~=2021.2
+  - dask~=2020.12
   - dask-labextension~=5.0
   - jupyter-resource-usage~=0.5.0
   - jupyterlab~=3.0
