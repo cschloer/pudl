@@ -27,7 +27,7 @@ from functools import partial
 import coloredlogs
 import pandas as pd
 import pyarrow as pa
-from pyarrow import parquet as pq
+from pyarrow import dataset as ds
 
 import pudl
 from pudl import constants as pc
@@ -214,12 +214,15 @@ def epacems_to_parquet(datapkg_path,
                 logger.info(f"Skipping {year}-{state}: 0 records found.")
             else:
                 logger.info(f"{year}-{state}: {len(df)} records")
-                pq.write_to_dataset(
-                    pa.Table.from_pandas(df, preserve_index=False, schema=schema),
-                    root_path=str(out_dir),
-                    partition_cols=list(partition_cols),
-                    compression=compression
-                )
+                table = pa.Table.from_pandas(df, preserve_index=False, schema=schema)
+                partitioning = ds.partitioning(
+                    table.select(partition_cols).schema)
+                ds.write_dataset(
+                    table,
+                    str(out_dir),
+                    partitioning=partitioning,
+                    format=pa.dataset.ParquetFileFormat())
+#                     compression=compression)
 
 
 def parse_command_line(argv):
