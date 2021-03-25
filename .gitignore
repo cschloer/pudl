@@ -23,3 +23,8 @@ dask-worker-space*
 devtools/user-requirements.txt
 .vscode/*
 commit.txt
+
+settings/
+data/
+notebook/
+environment.yml
